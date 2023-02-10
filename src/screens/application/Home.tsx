@@ -1,15 +1,17 @@
 import { Group } from '@components/Group'
 import { HomeHeader } from '@components/HomeHeader'
-import { VStack } from 'native-base'
+import { HStack, VStack } from 'native-base'
 
 export function Home() {
     return (
         <VStack flex={1}>
             <HomeHeader />
 
-            <Group 
-            name='MEU PAU'
-            />
+            <HStack>
+                <Group name='Costas' isActive={true} />
+                <Group name='Ombro' isActive={false} />
+            </HStack>
+
         </VStack>
     )
 }
