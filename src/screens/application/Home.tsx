@@ -1,17 +1,61 @@
-import { Group } from '@components/Group'
-import { HomeHeader } from '@components/HomeHeader'
-import { HStack, VStack } from 'native-base'
+import { ExerciseCard } from '@components/ExerciseCard';
+import { Group } from '@components/Group';
+import { HomeHeader } from '@components/HomeHeader';
+import { FlatList, Heading, HStack, Text, VStack } from 'native-base';
+import { useState } from 'react';
 
 export function Home() {
+
+    const [groups, setGroups] = useState(['costas', 'ombros', 'bíceps', 'tríceps']);
+    const [groupSelected, setGroupSelected] = useState('ombro')
+
+    const [exercises, setExercises] = useState(['1', '2', '3', '4', '5', '6']);
+
     return (
         <VStack flex={1}>
             <HomeHeader />
 
-            <HStack>
-                <Group name='Costas' isActive={true} />
-                <Group name='Ombro' isActive={false} />
-            </HStack>
+            <FlatList
+                showsHorizontalScrollIndicator={false}
+                _contentContainerStyle={{ px: 8 }}
+                data={groups}
+                maxH={10}
+                my={10}
+                horizontal
+                keyExtractor={item => item}
+                renderItem={({ item }) => (
+                    <Group
+                        name={item}
+                        isActive={groupSelected === item}
+                        onPress={() => setGroupSelected(item)}
+                    />
+                )}
+            />
 
+            <VStack flex={1} px={8} >
+                <HStack justifyContent="space-between" mb={5}>
+                    <Heading color="gray.200" fontSize="md">
+                        <Text>
+                            Exercícios
+                        </Text>
+                    </Heading>
+
+                    <Text color="gray.200" fontSize="sm">
+                        {exercises.length}
+                    </Text>
+                </HStack>
+
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    _contentContainerStyle={{paddingBottom: 16}}
+                    data={exercises}
+                    keyExtractor={item => item}
+                    renderItem={({ item }) => (
+                        <ExerciseCard />
+                    )}
+                />
+
+            </VStack>
         </VStack>
     )
 }
