@@ -18,23 +18,50 @@ export function Home() {
             <FlatList
                 showsHorizontalScrollIndicator={false}
                 _contentContainerStyle={{ px: 8 }}
+            
+
+
                 data={groups}
+                
+                
                 maxH={10}
                 my={10}
+                
                 horizontal
+                
                 keyExtractor={item => item}
+                
                 renderItem={({ item }) => (
+                
                     <Group
-                        name={item}
-                        isActive={groupSelected === item}
-                        onPress={() => setGroupSelected(item)}
+                
+                    name={item}
+                
+                    isActive={groupSelected === item}
+                
+                    onPress={() => setGroupSelected(item)}
+                
                     />
-                )}
+                
+                    )}
             />
+
+
+
 
             <VStack flex={1} px={8} >
                 <HStack justifyContent="space-between" mb={5}>
                     <Heading color="gray.200" fontSize="md">
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                         <Text>
                             Exercícios
                         </Text>
@@ -50,6 +77,13 @@ export function Home() {
                     _contentContainerStyle={{paddingBottom: 16}}
                     data={exercises}
                     keyExtractor={item => item}
+
+
+
+
+
+
+
                     renderItem={({ item }) => (
                         <ExerciseCard />
                     )}
