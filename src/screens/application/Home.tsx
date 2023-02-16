@@ -7,7 +7,7 @@ import { useState } from 'react';
 export function Home() {
 
     const [groups, setGroups] = useState(['costas', 'ombros', 'bíceps', 'tríceps']);
-    const [groupSelected, setGroupSelected] = useState('ombro')
+    const [groupSelected, setGroupSelected] = useState('costas')
 
     const [exercises, setExercises] = useState(['1', '2', '3', '4', '5', '6']);
 
@@ -18,50 +18,23 @@ export function Home() {
             <FlatList
                 showsHorizontalScrollIndicator={false}
                 _contentContainerStyle={{ px: 8 }}
-            
-
-
                 data={groups}
-                
-                
                 maxH={10}
                 my={10}
-                
                 horizontal
-                
                 keyExtractor={item => item}
-                
                 renderItem={({ item }) => (
-                
                     <Group
-                
-                    name={item}
-                
-                    isActive={groupSelected === item}
-                
-                    onPress={() => setGroupSelected(item)}
-                
+                        name={item}
+                        isActive={String(groupSelected).toUpperCase() === item.toUpperCase()}
+                        onPress={() => setGroupSelected(item)}
                     />
-                
-                    )}
+                )}
             />
-
-
-
 
             <VStack flex={1} px={8} >
                 <HStack justifyContent="space-between" mb={5}>
                     <Heading color="gray.200" fontSize="md">
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                         <Text>
                             Exercícios
                         </Text>
@@ -74,21 +47,13 @@ export function Home() {
 
                 <FlatList
                     showsVerticalScrollIndicator={false}
-                    _contentContainerStyle={{paddingBottom: 16}}
+                    _contentContainerStyle={{ paddingBottom: 16 }}
                     data={exercises}
                     keyExtractor={item => item}
-
-
-
-
-
-
-
                     renderItem={({ item }) => (
                         <ExerciseCard />
                     )}
                 />
-
             </VStack>
         </VStack>
     )
