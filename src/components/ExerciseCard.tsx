@@ -14,7 +14,7 @@ export function ExerciseCard({ ...rest }: Props) {
                     source={{ uri: 'https://www.kaisan.com.br/media/blog/post/MJ0419_BP_SidePlank_01_2.jpg' }}
                     alt="Image do exercicio"
                     rounded="md"
-                    resizeMode="center"
+                    resizeMode="cover"
                     mr={4}
                     w={16}
                     h={16}
