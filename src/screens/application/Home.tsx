@@ -11,6 +11,10 @@ export function Home() {
 
     const [exercises, setExercises] = useState(['1', '2', '3', '4', '5', '6']);
 
+    function handleOpenExerciseDatails() {
+
+    }
+
     return (
         <VStack flex={1}>
             <HomeHeader />
@@ -51,7 +55,9 @@ export function Home() {
                     data={exercises}
                     keyExtractor={item => item}
                     renderItem={({ item }) => (
-                        <ExerciseCard />
+                        <ExerciseCard
+                            onPress={handleOpenExerciseDatails}
+                        />
                     )}
                 />
             </VStack>
