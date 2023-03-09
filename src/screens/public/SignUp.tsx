@@ -5,7 +5,8 @@ import { Button } from '@components/Button';
 import { Input } from '@components/Input';
 import { Center, Heading, Image, Text, VStack, ScrollView } from 'native-base';
 import { useForm, Controller } from 'react-hook-form'
-
+import * as yup from "yup";
+import { yupResolver } from '@hookform/resolvers/yup';
 
 type FormDataProps = {
     name: string;
@@ -14,18 +15,27 @@ type FormDataProps = {
     password_confirm: string;
 }
 
+// Validação atraves de schemas, utilizando o yup 
+const signUpSchema = yup.object({
+    name: yup.string().required('Informe o nome.'),
+    email: yup.string().required('Informe o e-mail.').email('E-mail inválido.'),
+    password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 dígitos.'),
+    password_confirm: yup.string().required('Informe a senha.').oneOf([yup.ref('password'), null], 'A senha informada é diferente da anterior.')
+})
+
 export function SignUp() {
-
-    const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>();
-
     const navigation = useNavigation();
-
-    function handleGoBack() {
-        navigation.goBack()
-    }
+    
+    const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
+        resolver: yupResolver(signUpSchema)
+    });
 
     function handleSignUp({ name, email, password, password_confirm }: FormDataProps) {
         console.log({ name, email, password, password_confirm })
+    }
+
+    function handleGoBack() {
+        navigation.goBack()
     }
 
     return (
@@ -57,30 +67,19 @@ export function SignUp() {
                     <Controller
                         name="name"
                         control={control}
-                        rules={{ required: 'Informe o nome' }}
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder='Nome'
                                 onChangeText={onChange}
                                 value={value}
+                                errorMessage={errors.name?.message}
                             />
                         )}
                     />
 
-                    <Text color="white">
-                        {errors.name?.message}
-                    </Text>
-
                     <Controller
                         name="email"
                         control={control}
-                        rules={{
-                            required: 'Informe o E-mail',
-                            pattern: {
-                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                message: 'E-mail inválido'
-                            }
-                        }}
                         render={({ field: { onChange, value } }) => (
                             <Input
                                 placeholder='E-mail'
@@ -88,13 +87,10 @@ export function SignUp() {
                                 autoCapitalize='none'
                                 onChangeText={onChange}
                                 value={value}
+                                errorMessage={errors.email?.message}
                             />
                         )}
                     />
-
-                    <Text color="white">
-                        {errors.email?.message}
-                    </Text>
 
                     <Controller
                         control={control}
@@ -105,6 +101,7 @@ export function SignUp() {
                                 secureTextEntry
                                 onChangeText={onChange}
                                 value={value}
+                                errorMessage={errors.password?.message}
                             />
                         )}
                     />
@@ -120,6 +117,7 @@ export function SignUp() {
                                 onSubmitEditing={handleSubmit(handleSignUp)}
                                 returnKeyType="send"
                                 value={value}
+                                errorMessage={errors.password_confirm?.message}
                             />
                         )}
                     />
@@ -131,7 +129,7 @@ export function SignUp() {
                 </Center>
 
                 <Button
-                    mt={24}
+                    mt={12}
                     title='Voltar para o login'
                     variant="outline"
                     onPress={handleGoBack}

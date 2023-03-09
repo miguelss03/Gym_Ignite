@@ -99,6 +99,7 @@ export function Profile() {
 
                     <Heading
                         mt={8}
+                        fontFamily="heading"
                         alignSelf="flex-start"
                         color="gray.200"
                         fontSize="md" mb={2}>
