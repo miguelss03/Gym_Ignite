@@ -6,6 +6,7 @@ import { StatusBar, View } from 'react-native';
 import { Home } from '@screens/application/Home';
 
 import { THEME } from './src/theme';
+import { AuthContextProvider } from '@contexts/AuthContext';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold })
@@ -17,10 +18,9 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      {fontsLoaded ? < Routes /> : <Loading />}
+      <AuthContextProvider >
+        {fontsLoaded ? < Routes /> : <Loading />}
+      </AuthContextProvider>
     </NativeBaseProvider>
   );
 }
-
-
-//

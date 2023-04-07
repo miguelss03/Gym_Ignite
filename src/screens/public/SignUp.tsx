@@ -1,12 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
-import BackgroundImg from '@assets/background.png';
-import LogoSvg from '@assets/logo.svg';
 import { Button } from '@components/Button';
 import { Input } from '@components/Input';
-import { Center, Heading, Image, Text, VStack, ScrollView } from 'native-base';
+
+import BackgroundImg from '@assets/background.png';
+import LogoSvg from '@assets/logo.svg';
+
+import { Center, Heading, Image, Text, VStack, ScrollView, useToast } from 'native-base';
 import { useForm, Controller } from 'react-hook-form'
-import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
+
+import * as yup from "yup";
+import { api } from '@services/api';
+import { AppError } from '@utils/AppError';
 
 type FormDataProps = {
     name: string;
@@ -25,22 +30,27 @@ const signUpSchema = yup.object({
 
 export function SignUp() {
     const navigation = useNavigation();
+    const toast = useToast();
 
     const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
         resolver: yupResolver(signUpSchema)
     });
 
     async function handleSignUp({ name, email, password }: FormDataProps) {
-        const response = await fetch('http://192.168.1.4:3333/users', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, email, password })
-        })
-        const data = await response.json();
-        console.log(data);
+        // API de criação de usuários
+        try {
+            const response = await api.post('/users', { name, email, password });
+            console.log(response.data);
+        } catch (error) {
+            const isAppError = error instanceof AppError;
+            const title = isAppError ? error.message : 'Não foi possivel criar a conta. Tente novamente mais tarde'
+           
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+        }
     }
 
     function handleGoBack() {
